@@ -1,0 +1,101 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}{{ 'Nuevo Producto' if nuevo else 'Editar Producto' }} — Modas Pathy{% endblock %}
+
+{% block body_admin %}
+<div class="container">
+  <div class="card border-0 shadow-lg animate__animated animate__fadeInUp">
+    <!-- Cabecera con gradiente -->
+    <div class="card-header text-white text-center" style="background: linear-gradient(135deg, #8F2D56 0%, #E36485 100%);">
+      <h2 class="mb-0">{{ 'Nuevo Producto' if nuevo else 'Editar Producto' }}</h2>
+    </div>
+    <div class="card-body">
+      <form method="post" enctype="multipart/form-data" class="row g-4">
+        {{ form.hidden_tag() }}
+
+        <!-- Nombre -->
+        <div class="col-12">
+          {{ form.name.label(class="form-label fw-semibold") }}
+          {{ form.name(class="form-control form-control-lg", placeholder="Ingrese el nombre") }}
+          {% for e in form.name.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
+        </div>
+
+        <!-- Descripción -->
+        <div class="col-12">
+          {{ form.description.label(class="form-label fw-semibold") }}
+          {{ form.description(class="form-control", rows="3", placeholder="Descripción breve") }}
+          {% for e in form.description.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
+        </div>
+
+        <!-- Precio y Categoría -->
+        <div class="col-md-6">
+          {{ form.price.label(class="form-label fw-semibold") }}
+          {{ form.price(class="form-control", placeholder="Precio (Bs)") }}
+          {% for e in form.price.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
+        </div>
+        <div class="col-md-6">
+          {{ form.category.label(class="form-label fw-semibold") }}
+          {{ form.category(class="form-select") }}
+          {% for e in form.category.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
+        </div>
+
+        <!-- Imágenes -->
+        <div class="col-12">
+          <label class="form-label fw-semibold">Imágenes del producto</label>
+          <div id="preview-container" class="d-flex flex-wrap gap-3 align-items-center p-3 border rounded" style="background:#fff;">
+            {% if not nuevo and images %}
+              {% for img in images %}
+                <div class="image-thumbnail{% if img.is_main %} main{% endif %}" data-backend="true" data-id="{{ img.id }}">
+                  <img src="{{ url_for('static', filename='uploads/' + img.filename.replace('\\','/')) }}">
+                  <div class="main-indicator" onclick="selectExistingImage(this)">{% if img.is_main %}✔{% endif %}</div>
+                  <button type="button" class="remove-btn" onclick="removeExistingImage({{ img.id }}, this)">&times;</button>
+                </div>
+              {% endfor %}
+            {% endif %}
+            <label class="image-thumbnail add-image">
+              <span>➕</span>
+              <input type="file" id="image-input" name="images" accept="image/*" multiple data-nuevo="{{ 'true' if nuevo else 'false' }}">
+            </label>
+          </div>
+          <input type="hidden" name="main_image_index" id="main_image_index" value="">
+          <div class="form-text">
+            Selecciona una imagen como principal. Tamaño total máximo 16&nbsp;MB.
+          </div>
+        </div>
+
+        <!-- Flags: Novedad, Tendencia, Destacado -->
+        <div class="col-md-4">
+          <div class="form-check">
+            {{ form.is_new(class="form-check-input", id="is_new") }}
+            <label class="form-check-label" for="is_new">{{ form.is_new.label.text }}</label>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-check">
+            {{ form.is_trending(class="form-check-input", id="is_trending") }}
+            <label class="form-check-label" for="is_trending">{{ form.is_trending.label.text }}</label>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-check">
+            {{ form.is_featured(class="form-check-input", id="is_featured") }}
+            <label class="form-check-label" for="is_featured">{{ form.is_featured.label.text }}</label>
+          </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="col-12 d-flex justify-content-between mt-3">
+          <a href="{{ url_for('admin_productos') }}" class="btn btn-outline-secondary btn-lg rounded-pill px-4">Cancelar</a>
+          <button type="submit" class="btn btn-lg rounded-pill px-5 text-white" style="background: linear-gradient(135deg, #8F2D56, #E36485); border:none;">
+            Guardar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- CSS y JS externos -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/producto_form.css') }}">
+<script src="{{ url_for('static', filename='js/producto_form.js') }}" defer></script>
+{% endblock %}

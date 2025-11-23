@@ -1,0 +1,44 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}{{ title }} — Modas Pathy{% endblock %}
+
+{% block body_admin %}
+<div class="container-fluid">
+  <h2 class="mb-4">{{ title }}</h2>
+  <form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label for="{{ form.name.id }}" class="form-label">Nombre de tema</label>
+        {{ form.name(class="form-control", id=form.name.id) }}
+        {% for err in form.name.errors %}
+          <div class="text-danger small">{{ err }}</div>
+        {% endfor %}
+      </div>
+      <div class="col-md-6">
+        <div class="form-check mt-4">
+          {{ form.is_default(class="form-check-input", id=form.is_default.id) }}
+          <label for="{{ form.is_default.id }}" class="form-check-label">
+            Tema por defecto
+          </label>
+        </div>
+      </div>
+
+      {% for field in [form.primary, form.secondary, form.accent, form.text_color, form.bg_color, form.success, form.error] %}
+      <div class="col-md-4">
+        <label for="{{ field.id }}" class="form-label">{{ field.label.text }}</label>
+        {{ field(class="form-control form-control-color", type="color", id=field.id) }}
+        {% for err in field.errors %}
+          <div class="text-danger small">{{ err }}</div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="mt-4">
+      <button type="submit" class="btn btn-primary me-2">{{ form.submit.label.text }}</button>
+      <a href="{{ url_for('admin_themes') }}" class="btn btn-outline-secondary">Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

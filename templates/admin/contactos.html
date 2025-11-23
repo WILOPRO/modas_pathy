@@ -1,0 +1,43 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}Contactos — Modas Pathy{% endblock %}
+{% block body_admin %}
+<div class="container-fluid">
+  <h2 class="mb-4">Datos de contacto</h2>
+  <form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label for="{{ form.whatsapp.id }}" class="form-label">WhatsApp</label>
+        {{ form.whatsapp(class="form-control", id=form.whatsapp.id) }}
+      </div>
+      <div class="col-md-6">
+        <label for="{{ form.tiktok.id }}" class="form-label">TikTok</label>
+        {{ form.tiktok(class="form-control", id=form.tiktok.id) }}
+      </div>
+      <div class="col-md-6">
+        <label for="{{ form.facebook.id }}" class="form-label">Facebook</label>
+        {{ form.facebook(class="form-control", id=form.facebook.id) }}
+      </div>
+      <div class="col-md-6">
+        <label for="{{ form.gmail.id }}" class="form-label">Gmail</label>
+        {{ form.gmail(class="form-control", id=form.gmail.id) }}
+      </div>
+      <div class="col-md-6">
+        <label for="{{ form.youtube.id }}" class="form-label">YouTube</label>
+        {{ form.youtube(class="form-control", id=form.youtube.id) }}
+      </div>
+      <div class="col-md-6">
+        <label for="{{ form.telegram.id }}" class="form-label">Telegram</label>
+        {{ form.telegram(class="form-control", id=form.telegram.id) }}
+      </div>
+      <div class="col-md-12">
+        <label for="{{ form.address.id }}" class="form-label">Dirección</label>
+        {{ form.address(class="form-control", id=form.address.id) }}
+      </div>
+    </div>
+    <div class="mt-4">
+      <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

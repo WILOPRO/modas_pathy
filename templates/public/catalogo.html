@@ -1,0 +1,38 @@
+{% extends 'public/base.html' %}
+
+{% block title %}Catálogo — Modas Pathy{% endblock %}
+{% block page_title %}Catálogo{% endblock %}
+
+{% block content %}
+  {% if categoria %}
+    <h2 class="mb-4">{{ categoria.name }}</h2>
+  {% elif search %}
+    <h2 class="mb-4">Resultados para "{{ search }}"</h2>
+  {% endif %}
+  <div class="row g-4">
+    {% for prod in productos %}
+      <div class="col-6 col-md-3">
+        <div class="card h-100 hover-shadow border-0">
+          {% set main = prod.images|selectattr('is_main')|first or prod.images[0] %}
+          <div class="img-wrapper" style="--bg-img: url('{{ url_for('static', filename='uploads/' ~ main.filename) }}');">
+            <img src="{{ url_for('static', filename='uploads/' ~ main.filename) }}" alt="{{ prod.name }}">
+          </div>
+          <div class="card-body d-flex flex-column justify-content-between text-center">
+            <div>
+              <h5 class="card-title text-capitalize">{{ prod.name }}</h5>
+              <p class="text-truncate-two">{{ prod.description }}</p>
+            </div>
+            <div class="mt-3">
+              <p class="fw-bold mb-2">Bs {{ '%.2f'|format(prod.price) }}</p>
+              <a href="{{ url_for('producto_detalle', id=prod.id) }}" class="btn btn-primary w-100">
+                <i class="bi bi-info-circle"></i> Ver detalle
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <p class="text-muted">No se encontraron productos.</p>
+    {% endfor %}
+  </div>
+{% endblock %}

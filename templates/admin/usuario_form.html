@@ -1,0 +1,42 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}{% if nuevo %}Nuevo{% else %}Editar{% endif %} Administrador — Modas Pathy{% endblock %}
+{% block body_admin %}
+<div class="container py-5 d-flex justify-content-center align-items-center" style="min-height:80vh;">
+  <div class="card shadow rounded-4 border-0" style="max-width: 420px; width: 100%;">
+    <div class="card-body p-4">
+      <h4 class="mb-4 text-center">{% if nuevo %}Nuevo{% else %}Editar{% endif %} Administrador</h4>
+      {% if not nuevo %}
+      <div class="d-flex flex-column align-items-center mb-4">
+        <img src="{% if user.profile_image %}{{ url_for('static', filename='perfiles/' ~ user.profile_image) }}{% else %}{{ url_for('static', filename='perfiles/default.png') }}{% endif %}" class="rounded-circle shadow" style="width: 100px; height: 100px; object-fit:cover;">
+      </div>
+      {% endif %}
+      <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+          {{ form.name.label(class="form-label") }}
+          {{ form.name(class="form-control", placeholder="Nombre completo") }}
+        </div>
+        <div class="mb-3">
+          {{ form.username.label(class="form-label") }}
+          {{ form.username(class="form-control", placeholder="Usuario") }}
+        </div>
+        <div class="mb-3">
+          {{ form.password.label(class="form-label") }}
+          {{ form.password(class="form-control", placeholder="Contraseña (dejar vacío para no cambiar)") }}
+        </div>
+        <div class="mb-3">
+          {{ form.is_superadmin.label(class="form-label") }}
+          {{ form.is_superadmin(class="form-select") }}
+        </div>
+        <div class="mb-3">
+          {{ form.profile_image.label(class="form-label") }}
+          {{ form.profile_image(class="form-control") }}
+        </div>
+        {{ form.submit(class="btn btn-primary w-100 rounded-pill") }}
+        <a href="{{ url_for('admin_usuarios') }}" class="btn btn-outline-secondary w-100 rounded-pill mt-2">Cancelar</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
